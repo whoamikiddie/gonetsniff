@@ -11,7 +11,7 @@ import (
 	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcap"
 	"github.com/sirupsen/logrus"
-	"github.com/user/gonetsniff/internal/interfaces"
+	"github.com/whoamikiddie/gonetsniff/internal/interfaces"
 )
 
 // DeviceFingerprint represents a unique device fingerprint
@@ -20,7 +20,7 @@ type DeviceFingerprint struct {
 	MAC             string
 	TTL             uint8
 	WindowSize      uint16
-	UserAgent       string
+	whoamikiddieAgent       string
 	OSType          string
 	DeviceType      string
 	OpenPorts       []int
@@ -169,11 +169,11 @@ func (f *Fingerprinter) processPacket(packet gopacket.Packet) {
 		f.processTCPFingerprint(ip.SrcIP.String(), ip.TTL, tcp.Window, tcp)
 	}
 	
-	// Check for HTTP User-Agent
+	// Check for HTTP whoamikiddie-Agent
 	if applicationLayer := packet.ApplicationLayer(); applicationLayer != nil {
 		payload := string(applicationLayer.Payload())
-		if strings.Contains(payload, "User-Agent:") {
-			f.processHTTPUserAgent(ip.SrcIP.String(), payload)
+		if strings.Contains(payload, "whoamikiddie-Agent:") {
+			f.processHTTPwhoamikiddieAgent(ip.SrcIP.String(), payload)
 		}
 	}
 	
@@ -225,21 +225,21 @@ func (f *Fingerprinter) processTCPFingerprint(ipAddr string, ttl uint8, windowSi
 	device.LastUpdated = time.Now()
 }
 
-// processHTTPUserAgent extracts and processes User-Agent information
-func (f *Fingerprinter) processHTTPUserAgent(ipAddr string, payload string) {
-	// Extract User-Agent
-	uaStart := strings.Index(payload, "User-Agent:")
+// processHTTPwhoamikiddieAgent extracts and processes whoamikiddie-Agent information
+func (f *Fingerprinter) processHTTPwhoamikiddieAgent(ipAddr string, payload string) {
+	// Extract whoamikiddie-Agent
+	uaStart := strings.Index(payload, "whoamikiddie-Agent:")
 	if uaStart == -1 {
 		return
 	}
 	
-	uaStart += 11 // Length of "User-Agent:"
+	uaStart += 11 // Length of "whoamikiddie-Agent:"
 	uaEnd := strings.Index(payload[uaStart:], "\r\n")
 	if uaEnd == -1 {
 		return
 	}
 	
-	userAgent := strings.TrimSpace(payload[uaStart : uaStart+uaEnd])
+	whoamikiddieAgent := strings.TrimSpace(payload[uaStart : uaStart+uaEnd])
 	
 	f.mutex.Lock()
 	defer f.mutex.Unlock()
@@ -255,11 +255,11 @@ func (f *Fingerprinter) processHTTPUserAgent(ipAddr string, payload string) {
 		f.devices[ipAddr] = device
 	}
 	
-	// Update User-Agent
-	device.UserAgent = userAgent
+	// Update whoamikiddie-Agent
+	device.whoamikiddieAgent = whoamikiddieAgent
 	
-	// Attempt to identify OS and device type from User-Agent
-	osType, deviceType := f.identifyFromUserAgent(userAgent)
+	// Attempt to identify OS and device type from whoamikiddie-Agent
+	osType, deviceType := f.identifyFromwhoamikiddieAgent(whoamikiddieAgent)
 	if osType != "" {
 		device.OSType = osType
 	}
@@ -405,35 +405,35 @@ func (f *Fingerprinter) identifyOS(ttl uint8, windowSize uint16) string {
 	}
 }
 
-// identifyFromUserAgent attempts to identify OS and device type from User-Agent
-func (f *Fingerprinter) identifyFromUserAgent(userAgent string) (string, string) {
-	userAgent = strings.ToLower(userAgent)
+// identifyFromwhoamikiddieAgent attempts to identify OS and device type from whoamikiddie-Agent
+func (f *Fingerprinter) identifyFromwhoamikiddieAgent(whoamikiddieAgent string) (string, string) {
+	whoamikiddieAgent = strings.ToLower(whoamikiddieAgent)
 	
 	var osType, deviceType string
 	
 	// OS detection
 	switch {
-	case strings.Contains(userAgent, "windows"):
+	case strings.Contains(whoamikiddieAgent, "windows"):
 		osType = "Windows"
-	case strings.Contains(userAgent, "mac os") || strings.Contains(userAgent, "macos"):
+	case strings.Contains(whoamikiddieAgent, "mac os") || strings.Contains(whoamikiddieAgent, "macos"):
 		osType = "macOS"
-	case strings.Contains(userAgent, "linux"):
+	case strings.Contains(whoamikiddieAgent, "linux"):
 		osType = "Linux"
-	case strings.Contains(userAgent, "android"):
+	case strings.Contains(whoamikiddieAgent, "android"):
 		osType = "Android"
-	case strings.Contains(userAgent, "ios") || strings.Contains(userAgent, "iphone") || strings.Contains(userAgent, "ipad"):
+	case strings.Contains(whoamikiddieAgent, "ios") || strings.Contains(whoamikiddieAgent, "iphone") || strings.Contains(whoamikiddieAgent, "ipad"):
 		osType = "iOS"
 	}
 	
 	// Device type detection
 	switch {
-	case strings.Contains(userAgent, "mobile") || strings.Contains(userAgent, "android") || strings.Contains(userAgent, "iphone"):
+	case strings.Contains(whoamikiddieAgent, "mobile") || strings.Contains(whoamikiddieAgent, "android") || strings.Contains(whoamikiddieAgent, "iphone"):
 		deviceType = "Mobile"
-	case strings.Contains(userAgent, "tablet") || strings.Contains(userAgent, "ipad"):
+	case strings.Contains(whoamikiddieAgent, "tablet") || strings.Contains(whoamikiddieAgent, "ipad"):
 		deviceType = "Tablet"
-	case strings.Contains(userAgent, "tv") || strings.Contains(userAgent, "smart-tv"):
+	case strings.Contains(whoamikiddieAgent, "tv") || strings.Contains(whoamikiddieAgent, "smart-tv"):
 		deviceType = "Smart TV"
-	case strings.Contains(userAgent, "playstation") || strings.Contains(userAgent, "xbox"):
+	case strings.Contains(whoamikiddieAgent, "playstation") || strings.Contains(whoamikiddieAgent, "xbox"):
 		deviceType = "Gaming Console"
 	default:
 		deviceType = "PC/Desktop"

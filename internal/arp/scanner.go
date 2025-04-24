@@ -11,8 +11,8 @@ import (
 	"github.com/google/gopacket/pcap"
 	"github.com/mdlayher/arp"
 	"github.com/sirupsen/logrus"
-	"github.com/user/gonetsniff/internal/interfaces"
-	"github.com/user/gonetsniff/internal/utils"
+	"github.com/whoamikiddie/gonetsniff/internal/interfaces"
+	"github.com/whoamikiddie/gonetsniff/internal/utils"
 )
 
 // Device represents a discovered network device

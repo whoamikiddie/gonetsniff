@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
-	"github.com/user/gonetsniff/internal/interfaces"
+	"github.com/whoamikiddie/gonetsniff/internal/interfaces"
 )
 
 // DeviceInfo represents a discovered network device with enhanced information

@@ -108,7 +108,7 @@ func (l *Locator) fetchLocation(ip string) (GeoLocation, error) {
 	}
 
 	// Set headers
-	req.Header.Set("User-Agent", "GoNetSniff/1.0")
+	req.Header.Set("whoamikiddie-Agent", "GoNetSniff/1.0")
 	if l.apiKey != "" {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", l.apiKey))
 	}

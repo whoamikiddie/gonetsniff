@@ -12,7 +12,7 @@ import (
 	"github.com/google/gopacket/pcap"
 	"github.com/google/gopacket/pcapgo"
 	"github.com/sirupsen/logrus"
-	"github.com/user/gonetsniff/internal/interfaces"
+	"github.com/whoamikiddie/gonetsniff/internal/interfaces"
 )
 
 // CaptureOptions defines options for packet capture

@@ -9,7 +9,7 @@ import (
 	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcap"
 	"github.com/sirupsen/logrus"
-	"github.com/user/gonetsniff/internal/interfaces"
+	"github.com/whoamikiddie/gonetsniff/internal/interfaces"
 )
 
 // ProtocolStats tracks statistics for a specific protocol

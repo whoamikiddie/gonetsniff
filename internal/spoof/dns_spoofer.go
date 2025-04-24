@@ -12,7 +12,7 @@ import (
 	"github.com/google/gopacket/pcap"
 	"github.com/miekg/dns"
 	"github.com/sirupsen/logrus"
-	"github.com/user/gonetsniff/internal/interfaces"
+	"github.com/whoamikiddie/gonetsniff/internal/interfaces"
 )
 
 // DNSMapping represents a DNS spoofing rule
